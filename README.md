@@ -16,7 +16,7 @@ A web-based Employee Management System built with ASP.NET Core Razor Pages (.NET
 
 - ASP.NET Core Razor Pages (.NET 8)
 - C# 12
-- Entity Framework Core (if using a database)
+- Entity Framework Core (PostgreSQL)
 - Bootstrap 5
 - jQuery & jQuery Validation Unobtrusive
 
