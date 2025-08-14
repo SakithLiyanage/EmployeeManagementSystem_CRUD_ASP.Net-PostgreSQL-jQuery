@@ -53,7 +53,11 @@ namespace EmployeeManagementSystem.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(employee); 
+            else
+            {
+                return View(employee);
+            }
+                return View(employee); 
         }
 
 

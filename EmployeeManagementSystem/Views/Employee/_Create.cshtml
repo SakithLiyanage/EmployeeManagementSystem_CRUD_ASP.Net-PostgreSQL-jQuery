@@ -1,9 +1,20 @@
 ﻿@model EmployeeManagementSystem.Models.Employee
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.11/dist/jquery.validate.unobtrusive.min.js"></script>
 
 <div class="container">
     <h3>Add New Employee</h3>
-    <form method="post" action="@Url.Action("Create", "Employee")">
+    <form method="post" action="@Url.Action("Create", "Employee")" id="employeeForm">
         @Html.AntiForgeryToken()
+
+        <div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+
         <div class="form-group">
             <label asp-for="Name" class="form-label"></label>
             <input asp-for="Name" class="form-control" required maxlength="100" />
@@ -64,3 +75,21 @@
         </div>
     </form>
 </div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $("#employeeForm").submit(function(event) {
+            if ($("#employeeForm").valid()) {
+                return true;
+            }
+            event.preventDefault();
+            return false;
+        });
+    </script>
+}
