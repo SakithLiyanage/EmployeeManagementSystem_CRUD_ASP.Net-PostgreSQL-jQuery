@@ -1,0 +1,68 @@
+﻿@model EmployeeManagementSystem.Models.Employee
+
+<div class="container my-5">
+    <h3 class="text-center mb-4">Edit Employee</h3>
+
+    <form method="post" action="@Url.Action("Edit", "Employee", new { id = Model.Id })">
+        @Html.AntiForgeryToken() 
+
+        <div class="form-group mb-4">
+            <label asp-for="Name" class="form-label">Name</label>
+            <input asp-for="Name" class="form-control form-control-lg shadow-sm" required maxlength="100" placeholder="Enter Name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-4">
+            <label asp-for="Email" class="form-label">Email</label>
+            <input asp-for="Email" class="form-control form-control-lg shadow-sm" required maxlength="150" placeholder="Enter Email" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-4">
+            <label asp-for="Phone" class="form-label">Phone</label>
+            <input asp-for="Phone" class="form-control form-control-lg shadow-sm" maxlength="15" placeholder="Enter Phone Number" />
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-4">
+            <label asp-for="JobTitle" class="form-label">Job Title</label>
+            <input asp-for="JobTitle" class="form-control form-control-lg shadow-sm" required maxlength="50" placeholder="Enter Job Title" />
+            <span asp-validation-for="JobTitle" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-4">
+            <label asp-for="DateOfBirth" class="form-label">Date of Birth</label>
+            <input asp-for="DateOfBirth" class="form-control form-control-lg shadow-sm" type="date" required />
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-4">
+            <label asp-for="Salary" class="form-label">Salary</label>
+            <input asp-for="Salary" class="form-control form-control-lg shadow-sm" required placeholder="Enter Salary" />
+            <span asp-validation-for="Salary" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-4">
+            <label asp-for="Department" class="form-label">Department</label>
+            <input asp-for="Department" class="form-control form-control-lg shadow-sm" maxlength="50" placeholder="Enter Department" />
+            <span asp-validation-for="Department" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-4">
+            <label asp-for="HireDate" class="form-label">Hire Date</label>
+            <input asp-for="HireDate" class="form-control form-control-lg shadow-sm" type="date" required />
+            <span asp-validation-for="HireDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-4">
+            <label asp-for="ManagerId" class="form-label">Manager ID</label>
+            <input asp-for="ManagerId" class="form-control form-control-lg shadow-sm" placeholder="Enter Manager ID" />
+            <span asp-validation-for="ManagerId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group d-flex justify-content-between">
+            <button type="submit" class="btn btn-success btn-lg w-48">Update Employee</button>
+            <button type="button" class="btn btn-secondary btn-lg w-48" data-bs-dismiss="modal">Cancel</button>
+        </div>
+    </form>
+</div>

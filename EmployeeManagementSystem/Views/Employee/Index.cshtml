@@ -1,0 +1,166 @@
+﻿@model IEnumerable<EmployeeManagementSystem.Models.Employee>
+
+@{
+    ViewData["Title"] = "Employee Management System";
+}
+
+<head>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <script src="~/lib/sweetalert2/sweetalert2.min.js"></script>
+
+    <!-- Bootstrap for modals -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link href="~/css/site.css" rel="stylesheet" />
+</head>
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Employee Management System</h1>
+    <p class="text-center mb-4">Manage your employees efficiently with this modern web application.</p>
+
+    <!-- Add New Employee Button -->
+    <button id="btnAddNew" class="btn btn-primary btn-lg mb-4 w-100 shadow">Add New Employee</button>
+
+    <!-- Employee Table -->
+    <div class="table-responsive">
+        <table id="tblCategories" class="table table-striped table-hover table-bordered shadow-sm rounded">
+            <thead class="thead-dark bg-primary text-white">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Id)</th>
+                    <th>@Html.DisplayNameFor(model => model.Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.Email)</th>
+                    <th>@Html.DisplayNameFor(model => model.Phone)</th>
+                    <th>@Html.DisplayNameFor(model => model.JobTitle)</th>
+                    <th>@Html.DisplayNameFor(model => model.DateOfBirth)</th>
+                    <th>@Html.DisplayNameFor(model => model.Salary)</th>
+                    <th>@Html.DisplayNameFor(model => model.Department)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var employee in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(m => employee.Id)</td>
+                        <td>@Html.DisplayFor(m => employee.Name)</td>
+                        <td>@Html.DisplayFor(m => employee.Email)</td>
+                        <td>@Html.DisplayFor(m => employee.Phone)</td>
+                        <td>@Html.DisplayFor(m => employee.JobTitle)</td>
+                        <td>@employee.DateOfBirth.ToString("dd/MM/yyyy")</td> <!-- Fix applied here -->
+                        <td>@Html.DisplayFor(m => employee.Salary)</td>
+                        <td>@Html.DisplayFor(m => employee.Department)</td>
+                        <td>
+                            <button class="btn btn-sm btn-success btn-edit" data-id="@employee.Id">Edit</button>
+                            <button class="btn btn-sm btn-info btn-details" data-id="@employee.Id">Details</button>
+                            <a class="btn btn-sm btn-danger" onclick="DeleteCategories('@employee.Id')">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="categoryModalLabel">Add New Employee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="categoryModalContent">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+         var DeleteCategories = function (id) {
+            Swal.fire({
+                title: 'Do you want to delete this item?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/Employee/Delete?id=" + id,
+                        success: function (result) {
+                            console.log(result);
+                            var message = "Employee has been deleted successfully. Employee ID: " + result.id;
+                            Swal.fire({
+                                title: message,
+                                icon: 'info',
+                                onAfterClose: () => {
+                                    location.reload();
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+    };
+                
+
+
+    $(document).ready(function () {
+        $("#btnAddNew").click(function () {
+            loadModalForm("/Employee/Create", "Add New Employee", "Employee Added!");
+        });
+
+        $(document).on("click", ".btn-edit", function () {
+            var id = $(this).data("id");
+            loadModalForm(`/Employee/Edit/${id}`, "Edit Employee Details", "Employee Updated!");
+        });
+
+        $(document).on("click", ".btn-details", function () {
+            var id = $(this).data("id");
+            $("#categoryModalLabel").text("Employee Details");
+            $("#categoryModalContent").html("<p class='text-center'>Loading...</p>");
+            $("#categoryModal").modal('show');
+
+            $.get(`/Employee/Details/${id}`, function (data) {
+                $("#categoryModalContent").html(data);
+            });
+        });
+
+        function loadModalForm(url, title, successMessage) {
+            $("#categoryModalLabel").text(title);
+            $("#categoryModalContent").html("<p class='text-center'>Loading...</p>");
+            $("#categoryModal").modal('show');
+
+            $.get(url, function (data) {
+                $("#categoryModalContent").html(data);
+
+                $("#categoryModalContent form").on("submit", function (e) {
+                    e.preventDefault();
+                    var form = $(this);
+
+                    $.ajax({
+                        type: form.attr("method"),
+                        url: form.attr("action"),
+                        data: form.serialize(),
+                        success: function (response) {
+                            if (response.success) {
+                                $("#categoryModal").modal('hide');
+                                Swal.fire("Success", successMessage, "success")
+                                    .then(() => location.reload());
+                            } else {
+                                $("#categoryModalContent").html(response);
+                            }
+                        },
+                        error: function () {
+                            Swal.fire("Error", "Something went wrong.", "error");
+                        }
+                    });
+                });
+            });
+        }
+    });
+</script>

@@ -1,0 +1,44 @@
+﻿@model EmployeeManagementSystem.Models.Employee
+
+<div class="container my-5">
+    <h3 class="text-center mb-4">Employee Details</h3>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="card-title">Employee Information</h5>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Name</dt>
+                <dd class="col-sm-9">@Model.Name</dd>
+
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+
+                <dt class="col-sm-3">Phone</dt>
+                <dd class="col-sm-9">@Model.Phone</dd>
+
+                <dt class="col-sm-3">Job Title</dt>
+                <dd class="col-sm-9">@Model.JobTitle</dd>
+
+                <dt class="col-sm-3">Date of Birth</dt>
+                <dd class="col-sm-9">@Model.DateOfBirth.ToString("dd/MM/yyyy")</dd>
+
+                <dt class="col-sm-3">Salary</dt>
+                <dd class="col-sm-9">@Model.Salary.ToString("C")</dd>
+
+                <dt class="col-sm-3">Department</dt>
+                <dd class="col-sm-9">@Model.Department</dd>
+
+                <dt class="col-sm-3">Hire Date</dt>
+                <dd class="col-sm-9">@Model.HireDate.ToString("dd/MM/yyyy")</dd>
+
+                <dt class="col-sm-3">Manager ID</dt>
+                <dd class="col-sm-9">@Model.ManagerId</dd>
+            </dl>
+        </div>
+        <div class="card-footer">
+            <a href="@Url.Action("Index", "Employee")" class="btn btn-secondary btn-sm">Back to Employee List</a>
+        </div>
+    </div>
+</div>
