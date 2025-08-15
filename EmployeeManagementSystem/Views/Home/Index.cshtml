@@ -2,7 +2,41 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+</head>
+
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-4 mb-4">Welcome to Employee Management System</h1>
+        <p class="lead mb-4">Manage your employees efficiently with this web application.</p>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Start Managing Your Employees</h5>
+                        <p class="card-text">With this system, you can add, edit, view, and delete employee records, all in a user-friendly interface.</p>
+                        <a href="@Url.Action("Index", "Employee")" class="btn btn-primary">View Employees</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-5">
+
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-left">
+                <h4>How It Works</h4>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-check-circle"></i> Add new employees to the system.</li>
+                    <li><i class="fas fa-check-circle"></i> Edit employee details such as name, email, and job title.</li>
+                    <li><i class="fas fa-check-circle"></i> View detailed information about each employee.</li>
+                    <li><i class="fas fa-check-circle"></i> Delete employees when necessary.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
+

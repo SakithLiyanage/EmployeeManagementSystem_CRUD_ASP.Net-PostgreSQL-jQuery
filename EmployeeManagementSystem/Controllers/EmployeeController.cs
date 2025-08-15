@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EmployeeManagementSystem.Models;
+using System.Runtime.InteropServices;
 
 namespace EmployeeManagementSystem.Controllers
 {
@@ -14,16 +15,45 @@ namespace EmployeeManagementSystem.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, string sortOrder)
         {
-            var employee = await _context.Employee
-                .OrderByDescending(x => x.Id)
-                .ToListAsync();
+            var employees = await _context.Employee.ToListAsync();
 
-            return _context.Employee != null
-                ? View(employee)
-                : Problem("Entity set 'ApplicationDbContext.Employee' is null.");
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                employees = employees.Where(n => n.Name.Contains(searchString) || n.Email.Contains(searchString)).ToList();
+            }
+
+            ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateOfBirthSortParam"] = sortOrder == "date_asc" ? "date_desc" : "date_asc";
+            ViewData["SalaryParam"] = sortOrder == "salary_asc" ? "salary_desc" : "salary_asc";
+
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    employees = employees.OrderByDescending(e => e.Name).ToList();
+                    break;
+                case "date_asc":
+                    employees = employees.OrderBy(d => d.DateOfBirth).ToList();
+                    break;
+                case "date_desc":
+                    employees = employees.OrderByDescending(d => d.DateOfBirth).ToList();
+                    break;
+                case "salary_asc":
+                    employees = employees.OrderBy(s => s.Salary).ToList();
+                    break;
+                case "salary_desc":
+                    employees = employees.OrderByDescending(s => s.Salary).ToList();
+                    break;
+                default:
+                    employees = employees.OrderBy(e => e.Name).ToList();
+                    break;
+            }
+
+            return View(employees);
         }
+
 
         public async Task<IActionResult> Details(long? id)
         {
